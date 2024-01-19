@@ -40,4 +40,14 @@ class ElementoCatalogo {
     public void setNumeroPagine(int numeroPagine) {
         this.numeroPagine = numeroPagine;
     }
+
+    @Override
+    public String toString() {
+        return "ElementoCatalogo{" +
+                "codiceISBN='" + codiceISBN + '\'' +
+                ", titolo='" + titolo + '\'' +
+                ", annoPubblicazione=" + annoPubblicazione +
+                ", numeroPagine=" + numeroPagine +
+                '}';
+    }
 }

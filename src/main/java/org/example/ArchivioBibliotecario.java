@@ -1,12 +1,19 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ArchivioBibliotecario {
     private List<ElementoCatalogo> archivio = new ArrayList<>();
+
+    public List<ElementoCatalogo> getArchivio() {
+        return archivio;
+    }
 
     // Metodo per l'aggiunta di un elemento all'archivio
     public void aggiungiElemento(ElementoCatalogo elemento) {
@@ -38,4 +45,32 @@ public class ArchivioBibliotecario {
                 .filter(elemento -> elemento instanceof Libro && ((Libro) elemento).getAutore().equals(autore))
                 .collect(Collectors.toList());
     }
+
+    //Metodo per il salvataggio dell'archivio sul disco
+    public static void salvaProdottiSuDisco(List<ElementoCatalogo> elemento) throws IOException {
+        File file = new File("dirProdotti/prodotti.txt");
+
+        String stringaProdotti = elemento.stream().map(p->p.getCodiceISBN()+"@"+p.getTitolo()+"@"+p.getAnnoPubblicazione()+ "@"+ p.getNumeroPagine()).collect(Collectors.joining("#"));
+
+        FileUtils.writeStringToFile(file, stringaProdotti, Charset.defaultCharset(), true);
+    }
+    public static ArrayList<ElementoCatalogo> leggiProdottiDaDisco() throws IOException {
+        File file = new File("dirProdotti/prodotti.txt");
+
+        String stringaProdotti =  FileUtils.readFileToString(file, Charset.defaultCharset());
+
+        String[] stringheSingoloProdotto = stringaProdotti.split("#");
+
+
+        ArrayList<ElementoCatalogo> prodotti = Arrays.stream(stringheSingoloProdotto).map(s -> {String[] stringaCaratteristicheProdotto = s.split("@");
+            ElementoCatalogo e = new ElementoCatalogo(
+                    stringaCaratteristicheProdotto[0],
+                    stringaCaratteristicheProdotto[1],
+                    Integer.parseInt(stringaCaratteristicheProdotto[2]),
+                    Integer.parseInt(stringaCaratteristicheProdotto[3]));
+            return e;}).collect(Collectors.toCollection(ArrayList::new));
+        return prodotti;
+    }
+
+
 }
