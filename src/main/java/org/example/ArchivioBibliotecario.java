@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 public class ArchivioBibliotecario {
     private List<ElementoCatalogo> archivio = new ArrayList<>();
 
-    // Altri metodi della classe che hai già implementato...
-
     // Metodo per l'aggiunta di un elemento all'archivio
     public void aggiungiElemento(ElementoCatalogo elemento) {
         archivio.add(elemento);
